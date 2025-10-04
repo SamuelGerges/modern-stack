@@ -3,8 +3,10 @@
 ## Quick Installation
 
 ```bash
-    git clone git@github.com:SamuelGerges/task-microservice.git
-    cd task-microservice
+    git clone git@github.com:SamuelGerges/modern-stack.git
+    cd ./laravel
+    cp .env.example .env
+    cd ./node-notify
     cp .env.example .env
 ```
 
