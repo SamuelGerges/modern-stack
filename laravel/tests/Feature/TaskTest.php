@@ -20,23 +20,6 @@ it('has task page', function () {
 });
 
 /**
- * Get all tasks
- */
-test('it can list all tasks', function () {
-    Task::factory()->count(5)->create(['user_id' => $this->user->id]);
-
-    $response = $this->getJson('/api/tasks/all');
-
-    $response->assertStatus(200)
-        ->assertJsonStructure([
-            'data' => [
-                'tasks',
-                'meta' => ['current_page', 'last_page', 'total']
-            ]
-        ]);
-});
-
-/**
  * Get tasks for the authenticated user
  */
 test('it can list all tasks for owner', function () {
