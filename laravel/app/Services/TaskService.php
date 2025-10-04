@@ -13,12 +13,6 @@ class TaskService
     {
         $this->taskRepository = $taskRepository;
     }
-
-
-    public function getAllTasks(): LengthAwarePaginator
-    {
-        return $this->taskRepository->getAllTasks();
-    }
     public function getUserTasks(int $userId, ?string $status = null, ?string $dueFrom = null, ?string $dueTo = null): LengthAwarePaginator
     {
         return $this->taskRepository->getUserTasks($userId, $status, $dueFrom, $dueTo);

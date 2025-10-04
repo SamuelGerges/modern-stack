@@ -34,25 +34,6 @@ class TaskRepository implements ITaskRepository
             })
             ->orderByDesc('id')->paginate(10);
     }
-
-    public function getAllTasks(): LengthAwarePaginator
-    {
-        return Task::query()
-            ->select([
-                'tasks.id as id',
-                'users.name as user_name',
-                'tasks.title as title',
-                'tasks.description as description',
-                'tasks.status as status',
-                'tasks.due_date as due_date',
-                'tasks.created_at as created_at',
-                'tasks.updated_at as updated_at',
-            ])
-            ->join('users', 'tasks.user_id', '=', 'users.id')
-            ->orderByDesc('id')
-            ->paginate(10);
-    }
-
     public function create(array $data): Task
     {
         return Task::query()->create([

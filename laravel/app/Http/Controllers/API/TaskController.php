@@ -21,21 +21,6 @@ class TaskController extends Controller
     }
 
 
-    public function getAllTasks()
-    {
-        $tasks = $this->taskService->getAllTasks();
-        $data  = [
-            'tasks' => TaskResource::collection($tasks),
-            'meta'  => [
-                'current_page' => $tasks->currentPage(),
-                'last_page'    => $tasks->lastPage(),
-                'total'        => $tasks->total(),
-            ]
-        ];
-
-        return ResponsesHelper::returnData($data, 'Tasks retrieved successfully', Response::HTTP_OK);
-    }
-
     public function getTasksOwner(Request $request)
     {
         $userId  = auth()->id();

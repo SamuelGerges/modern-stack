@@ -157,51 +157,6 @@
 			"name": "Tasks",
 			"item": [
 				{
-					"name": "Get Tasks All",
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{Token}}",
-									"type": "string"
-								}
-							]
-						},
-						"method": "GET",
-						"header": [
-							{
-								"key": "Accept",
-								"value": "application/json",
-								"type": "text"
-							},
-							{
-								"key": "Content-Type",
-								"value": "application/json",
-								"type": "text"
-							}
-						],
-						"url": {
-							"raw": "{{local}}/api/get-tasks-all?page=2",
-							"host": [
-								"{{local}}"
-							],
-							"path": [
-								"api",
-								"get-tasks-all"
-							],
-							"query": [
-								{
-									"key": "page",
-									"value": "2"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
 					"name": "Tasks Owner",
 					"request": {
 						"auth": {
@@ -273,14 +228,14 @@
 							}
 						],
 						"url": {
-							"raw": "{{local}}/api/tasks/15",
+							"raw": "{{local}}/api/tasks/14",
 							"host": [
 								"{{local}}"
 							],
 							"path": [
 								"api",
 								"tasks",
-								"15"
+								"14"
 							]
 						}
 					},
@@ -302,14 +257,14 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "{{local}}/api/tasks/9",
+							"raw": "{{local}}/api/tasks/14",
 							"host": [
 								"{{local}}"
 							],
 							"path": [
 								"api",
 								"tasks",
-								"9"
+								"14"
 							]
 						}
 					},
@@ -417,14 +372,14 @@
 							"raw": "{\n    \"title\": \"Crud User\", \n    \"description\": \"THis Task for Create user and update and delete \",\n    \"due_date\" : \"2025-10-11\"\n}"
 						},
 						"url": {
-							"raw": "{{local}}/api/tasks/51",
+							"raw": "{{local}}/api/tasks/14",
 							"host": [
 								"{{local}}"
 							],
 							"path": [
 								"api",
 								"tasks",
-								"51"
+								"14"
 							]
 						}
 					},
@@ -461,14 +416,14 @@
 							"formdata": []
 						},
 						"url": {
-							"raw": "{{local}}/api/tasks/51/complete",
+							"raw": "{{local}}/api/tasks/14/complete",
 							"host": [
 								"{{local}}"
 							],
 							"path": [
 								"api",
 								"tasks",
-								"51",
+								"14",
 								"complete"
 							]
 						}
