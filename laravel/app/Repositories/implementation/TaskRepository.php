@@ -27,10 +27,10 @@ class TaskRepository implements ITaskRepository
                 return $query->where('status', $status);
             })
             ->when($dueFrom, function ($query, $dueFrom) {
-                return $query->where('due_from', $dueFrom);
+                return $query->where('due_date','>', $dueFrom);
             })
             ->when($dueTo, function ($query, $dueTo) {
-                return $query->where('due_to', $dueTo);
+                return $query->where('due_date', '<', $dueTo);
             })
             ->orderByDesc('id')->paginate(10);
     }
