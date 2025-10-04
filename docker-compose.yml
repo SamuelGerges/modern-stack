@@ -1,0 +1,65 @@
+services:
+  postgres:
+    image: postgres:16
+    environment:
+      POSTGRES_DB: taskdb
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - dbdata:/var/lib/postgresql/data
+
+  redis:
+    image: redis:7.2
+    ports:
+      - "6379:6379"
+
+  laravel-app:
+    build:
+      context: .
+      dockerfile: docker/php.Dockerfile
+    working_dir: /var/www/app
+    environment:
+      APP_ENV: local
+      APP_DEBUG: "true"
+      DB_CONNECTION: pgsql
+      DB_HOST: postgres
+      DB_PORT: 5432
+      DB_DATABASE: taskdb
+      DB_USERNAME: postgres
+      DB_PASSWORD: postgres
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+      WEBHOOK_SECRET: changeme
+      NODE_NOTIFY_URL: http://node-notify:3001/notify
+    volumes:
+      - ./laravel:/var/www/app
+    depends_on:
+      - postgres
+      - redis
+      - node-notify
+    ports:
+      - "8000:8000"
+    command: >
+      sh -c "
+        php artisan migrate --force || true &&
+        php artisan serve --host=0.0.0.0 --port=8000
+      "
+
+  node-notify:
+    build:
+      context: .
+      dockerfile: docker/node.Dockerfile
+    working_dir: /app
+    environment:
+      PORT: 3001
+      WEBHOOK_SECRET: changeme
+    volumes:
+      - ./node-notify:/app
+    ports:
+      - "3001:3001"
+    command: node index.js
+
+volumes:
+  dbdata:

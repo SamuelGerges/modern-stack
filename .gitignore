@@ -1,0 +1,36 @@
+```
+# Laravel
+/vendor/
+/node_modules/
+/public/storage
+/storage/*.key
+/storage/app/public
+/storage/framework/cache/*
+/storage/framework/sessions/*
+/storage/framework/views/*
+/storage/logs/*
+/bootstrap/cache/*.php
+
+# Laravel specific
+.env
+.env.*.local
+.phpunit.result.cache
+Homestead.json
+Homestead.yaml
+npm-debug.log
+yarn-error.log
+.idea
+.vscode
+
+# Node.js microservice
+node-notify/node_modules
+node-notify/package-lock.json
+
+# Docker
+docker-compose.override.yml
+docker/*.log
+*.pid
+*.seed
+*.pid.lock
+
+```

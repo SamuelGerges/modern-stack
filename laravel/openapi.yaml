@@ -1,0 +1,237 @@
+openapi: 3.0.3
+info:
+  title: Task Management API
+  version: 1.0.0
+  description: API for managing tasks with authentication
+
+servers:
+  - url: http://localhost:8000/api
+    description: Local development server
+
+tags:
+  - name: Auth
+    description: Authentication endpoints
+  - name: Tasks
+    description: Task management endpoints
+
+paths:
+  /register:
+    post:
+      tags: [Auth]
+      summary: Register a new user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                email:
+                  type: string
+                password:
+                  type: string
+      responses:
+        '201':
+          description: User registered successfully
+
+  /login:
+    post:
+      tags: [Auth]
+      summary: Login user and get token
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                password:
+                  type: string
+      responses:
+        '200':
+          description: User login successfully
+        '401':
+          description: The provided credentials do not match our records
+
+  /logout:
+    post:
+      security:
+        - bearerAuth: []
+      tags: [Auth]
+      summary: Logout user (invalidate token)
+      responses:
+        '200':
+          description: User logged out successfully
+        '401':
+          'description': Unable to logout
+
+  /tasks/all:
+    get:
+      security:
+        - bearerAuth: []
+      tags: [Tasks]
+      summary: Get all tasks (admin access)
+      responses:
+        '200':
+          description: Tasks retrieved successfully
+
+  /tasks:
+    get:
+      security:
+        - bearerAuth: []
+      tags: [Tasks]
+      summary: Get tasks for logged-in user
+      parameters:
+        - in: query
+          name: status
+          schema:
+            type: string
+          description: Filter by task status
+        - in: query
+          name: due_from
+          schema:
+            type: string
+            format: date
+        - in: query
+          name: due_to
+          schema:
+            type: string
+            format: date
+      responses:
+        '200':
+          description: List of user tasks
+    post:
+      security:
+        - bearerAuth: []
+      tags: [Tasks]
+      summary: Create a new task
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TaskInput'
+      responses:
+        '201':
+          description: Task created successfully
+        '500':
+          'description': Task creation failed
+
+  /tasks/{task}:
+    get:
+      security:
+        - bearerAuth: []
+      tags: [Tasks]
+      summary: Get task by ID
+      parameters:
+        - in: path
+          name: task
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Task retrieved successfully
+        '404':
+          'description': the task does not exist
+    put:
+      security:
+        - bearerAuth: []
+      tags: [Tasks]
+      summary: Update task by ID
+      parameters:
+        - in: path
+          name: task
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TaskInput'
+      responses:
+        '200':
+          description: Task updated successfully
+        '404':
+          'description': the task does not exist
+    delete:
+      security:
+        - bearerAuth: []
+      tags: [Tasks]
+      summary: Delete task by ID
+      parameters:
+        - in: path
+          name: task
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Task deleted successfully
+        '404':
+          'description': the task does not exist
+
+  /tasks/{task}/complete:
+    post:
+      security:
+        - bearerAuth: []
+      tags: [Tasks]
+      summary: Mark task as complete
+      parameters:
+        - in: path
+          name: task
+          required: true
+          schema:
+            type: integer
+      responses:
+        '404':
+          'description': the task does not exist
+        '406':
+          description: Task already completed
+        '200':
+          description: Task marked as complete
+        '500':
+          'description': Failed to complete task
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+  schemas:
+    TaskInput:
+      type: object
+      properties:
+        title:
+          type: string
+          example: "Finish project report"
+        description:
+          type: string
+          example: "Complete the pending report before deadline"
+        due_date:
+          type: string
+          format: date
+          example: "2025-10-15"
+    TaskResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+        title:
+          type: string
+        description:
+          type: string
+        due_date:
+          type: string
+          format: date
+        status:
+          type: string
+          enum: [pending, done]
